@@ -1,0 +1,107 @@
+@import url("https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "League Spartan", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.signup__header {
+  margin-bottom: 12px;
+  text-align: left;
+  width: 80%;
+}
+
+.signup__form__container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 70%;
+  padding: 2rem;
+  margin: 20px auto;
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+.signup__form__container .img__container {
+  width: 25%;
+  margin-bottom: 30px;
+  position: relative;
+  background: #59595915;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+}
+
+.img__container img:not(img.profile__img),
+.img__container input {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.img__container input[type="file"] {
+  top: 70%;
+  left: 60%;
+  z-index: 10;
+  opacity: 0;
+}
+
+.img__container img:not(img.profile__img) {
+  width: 50px;
+  height: 50px;
+
+  top: 70%;
+  left: 65%;
+}
+
+.signup__form__container img.profile__img {
+  width: 100%;
+  border-radius: 50%;
+}
+
+.signup__form__container .input_box {
+  width: 80%;
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 1rem;
+}
+
+.signup__form__container input,
+.signup__form__container select {
+  padding: 9px 5px;
+  width: 100%;
+  font-size: 16px;
+  background: transparent;
+  border-radius: 5px;
+  border: 1px solid gray;
+  background: #fff;
+}
+
+input,
+select,
+button {
+  cursor: pointer;
+}
+
+.signup__form__container .btn__container {
+  width: 80%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.signup__form__container .btn__container button {
+  width: 130px;
+  padding: 10px 0;
+  border: none;
+  outline: none;
+  background: #000;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 4px;
+}

@@ -1,13 +1,354 @@
-body {
+@import url("https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&display=swap");
+
+* {
+  padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  box-sizing: border-box;
+  list-style: none;
+  font-family: "League Spartan", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+main {
+  width: 100%;
+  background: #ffff;
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-template-areas:
+    "one two two two"
+    "one two two two";
+}
+
+/* NAVBAR SECTION  */
+
+nav.navbar {
+  padding: 20px;
+  background: #ffff;
+  width: 100%;
+  display: flex;
+  justify-content: right;
+  position: sticky;
+  top: 0;
+  left: 0;
+  box-shadow: 10px 10px 10px #0000000c;
+}
+
+nav button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+/* PROFILE SECTION  */
+
+.profile__section {
+  grid-area: one;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background: #ffffff;
+  width: 300px;
+  height: 100%;
+  padding: 2rem;
+  align-items: center;
+}
+
+.profile__section .img-container {
+  width: 80%;
+  display: flex;
+  justify-content: center;
+}
+
+.profile__section .img-container img {
+  width: 10rem;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.profile__section form.profile-details {
+  display: flex;
+  width: 80%;
+  flex-direction: column;
+}
+
+.profile__section form label {
+  margin: 1rem 0 0.3rem 0;
+  color: gray;
+  text-transform: uppercase;
+  font-size: 13px;
+  font-weight: 600;
+}
+.profile__section form input:nth-child(1) {
+  margin-bottom: 0.75rem;
+}
+
+.profile__section form input:nth-child(1),
+.profile__section form input:nth-child(2) {
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 13px;
+  text-align: center;
+}
+
+.profile__section form span {
+  padding-bottom: 20px;
+  border-bottom: 1px solid #000;
+}
+
+.profile__section .profile-details input {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 17px;
+}
+
+.profile__section .btn-container {
+  margin: auto;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.profile__section .btn-container button {
+  width: 150px;
+  border-radius: 0.2rem;
+  font-size: 15px;
+  padding: 10px;
+  border: none;
+  outline: none;
+  background: #006644;
+  color: #fff;
+  cursor: pointer;
+  transition: 300ms ease;
+}
+
+.profile__section .btn-container button:first-child:hover {
+  background: #00704b;
+}
+
+.profile__section .btn-container button:last-child {
+  background: #f3f4f6;
+  color: #000;
+}
+
+.profile__section .btn-container button:last-child:hover {
+  background: #fafbfc;
+}
+
+input:disabled {
+  color: #141414;
+}
+
+/* ANALYTICS SECTION  */
+
+.analytics__section {
+  grid-area: two;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  background: #fafbfc;
+}
+
+.analytics__section .main-dash {
+  width: 96%;
+  height: fit-content;
+  display: flex;
+  justify-content: space-between;
+  padding: 3rem 0;
+}
+
+.analytics__section .main-dash .dashboard {
+  width: 280px;
+  height: 180px;
+  padding: 1rem 1.75rem;
+  border-radius: 1rem;
+  font-size: 1.1rem;
+  display: flex;
+}
+
+.analytics__section .dashboard-tags {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.analytics__section .dashboard:nth-child(1) {
+  background: #deebff;
+}
+.analytics__section .dashboard:nth-child(2) {
+  background: #e6fcff;
+}
+.analytics__section .dashboard:nth-child(3) {
+  background: #abf5d1;
+}
+
+.analytics__section .dashboard-items {
+  margin-top: 10px;
+}
+
+.analytics__section .dashboard-items:last-child {
+  margin-top: 40px;
+}
+
+/* ACTIVITIES AND ANNOUNCEMENTS SECTION  */
+
+.activities {
+  width: 96%;
+  border: 1px solid rgb(224, 224, 224);
+  border-radius: 4px;
+  height: 100%;
+  box-shadow: -10px -10px 20px #14141405;
+}
+
+.activities .head {
+  border-bottom: 2px solid rgb(224, 224, 224);
+  padding: 10px;
+  color: #222;
+}
+
+.activities .announcments {
+  padding: 2rem;
+}
+
+.announcments img {
+  width: 30%;
+  height: 15rem;
+  margin-left: 35%;
+}
+
+/* MEMBERS TABLE SECTION  */
+
+.member__table__section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 4rem;
+  background: #fafbfc;
+}
+
+.member__table-filter {
+  display: flex;
+  gap: 15px;
+  width: 100%;
+  justify-content: flex-end;
+  margin-bottom: 2rem;
+}
+
+.member__table-filter span {
+  font-weight: 600;
+  padding: 0 10px;
+}
+
+span.active {
+  border-bottom: 2px solid #006644;
+}
+
+.member__table-main {
+  display: flex;
+  flex-flow: column;
+  gap: 1.75rem;
+}
+
+.member__table-head {
+  display: flex;
+  justify-content: space-between;
+}
+
+.member__table-head h1 {
+  font-weight: 550;
+}
+
+.member__table-head .btn_box {
+  display: flex;
+  gap: 0.7rem;
+  align-items: center;
+}
+
+.member__table-head .btn_box button {
+  height: 100%;
+  width: 120px;
+  border: none;
+  background: #00704b;
+  color: #fff;
+  border-radius: 5px;
+}
+
+.member__table-main table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 16px;
+  text-align: left;
+  background: #ffff;
+  padding: 1rem;
+  border-radius: 5px;
+}
+
+.member__table-main table th {
+  background: #edeff2;
+  font-weight: 600;
+  color: #222222bb;
+}
+
+.member__table-main table th,
+.member__table-main table td {
+  padding: 12px 15px;
+  font-weight: 600;
+}
+
+.member__table-main table td span.member__active,
+.member__table-main span.member__inactive,
+.member__table-main table td .verify {
+  padding: 7px 17px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.member__table-main span.member__active {
+  color: #006644;
+  background: #abf5d1;
+}
+
+.member__table-main table td span.member__inactive {
+  color: #910215;
+  background: #fa9999e2;
+}
+
+.member__table-main table td .verify {
+  border: none;
+  padding: initial 20px;
+  background: #00704b;
+  color: #fff;
+  transition: 200ms ease;
+}
+
+.member__table-main button.verify:hover {
+  opacity: 0.9;
+}
+
+.member__table-main table td input {
+  accent-color: #00704b;
+  margin-left: 20px;
+}
+
+.member__table-main table td button.edit__btn {
+  border: none;
+  background: transparent;
+  color: #00704b;
+  cursor: pointer;
+  transition: 200ms ease;
+  font-weight: 600;
+}
+
+.member__table-main button.edit__btn:hover {
+  text-decoration: underline;
 }
