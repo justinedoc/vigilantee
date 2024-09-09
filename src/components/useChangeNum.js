@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useFetchUser } from "./useFetchUser";
 
 export const useChangeNum = () => {
-  const [num, setNum] = useState([0, true]);
+  const { loading, currentUser } = useFetchUser();
+
   const dashboardItems = [
     {
       title: "Shifts",
@@ -21,7 +22,8 @@ export const useChangeNum = () => {
           <path d="M20 6h-3V4c0-1.103-.897-2-2-2H9c-1.103 0-2 .897-2 2v2H4c-1.103 0-2 .897-2 2v3h20V8c0-1.103-.897-2-2-2zM9 4h6v2H9V4zm5 10h-4v-2H2v7c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2v-7h-8v2z"></path>
         </svg>
       ),
-      num: num[0],
+      num: currentUser?.shifts,
+      id: crypto.randomUUID(),
     },
 
     {
@@ -42,7 +44,8 @@ export const useChangeNum = () => {
           <path d="M3 4v5h2V5h4V3H4a1 1 0 0 0-1 1zm18 5V4a1 1 0 0 0-1-1h-5v2h4v4h2zm-2 10h-4v2h5a1 1 0 0 0 1-1v-5h-2v4zM9 21v-2H5v-4H3v5a1 1 0 0 0 1 1h5zM2 11h20v2H2z"></path>
         </svg>
       ),
-      num: num[0],
+      num: currentUser?.scans,
+      id: crypto.randomUUID(),
     },
 
     {
@@ -52,20 +55,26 @@ export const useChangeNum = () => {
         "dashboard-items dashboard-items__title",
         "dashboard-items dashboard-tags",
       ],
-      svg: [
+      svg: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="40"
           height="35"
           viewBox="0 0 24 24"
-          style={{ fill: "#006644" }}
+          style={
+            currentUser?.verifiedStatus
+              ? { fill: "#006644" }
+              : { fill: "#910215" }
+          }
         >
           <path d="M17.988 22a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h11.988zM9 5h6v2H9V5zm5.25 6.25A2.26 2.26 0 0 1 12 13.501c-1.235 0-2.25-1.015-2.25-2.251S10.765 9 12 9a2.259 2.259 0 0 1 2.25 2.25zM7.5 18.188c0-1.664 2.028-3.375 4.5-3.375s4.5 1.711 4.5 3.375v.563h-9v-.563z"></path>
-        </svg>,
-      ],
-      num: num[1],
+        </svg>
+      ),
+      num: currentUser?.isVerified,
+      id: crypto.randomUUID(),
     },
   ];
+
   const verifiedStatus = (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -78,5 +87,17 @@ export const useChangeNum = () => {
     </svg>
   );
 
-  return { setNum, verifiedStatus, dashboardItems };
+  const unVerifiedStatus = (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      style={{ fill: "#910210" }}
+    >
+      <path d="M8 12.052c1.995 0 3.5-1.505 3.5-3.5s-1.505-3.5-3.5-3.5-3.5 1.505-3.5 3.5 1.505 3.5 3.5 3.5zM9 13H7c-2.757 0-5 2.243-5 5v1h12v-1c0-2.757-2.243-5-5-5zm11.293-4.707L18 10.586l-2.293-2.293-1.414 1.414 2.292 2.292-2.293 2.293 1.414 1.414 2.293-2.293 2.294 2.294 1.414-1.414L19.414 12l2.293-2.293z"></path>
+    </svg>
+  );
+
+  return { loading, verifiedStatus, dashboardItems, unVerifiedStatus };
 };

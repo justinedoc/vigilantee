@@ -39,12 +39,6 @@ nav.navbar {
   box-shadow: 10px 10px 10px #0000000c;
 }
 
-nav button {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-}
-
 /* PROFILE SECTION  */
 
 .profile__section {
@@ -118,7 +112,7 @@ nav button {
   gap: 10px;
 }
 
-.profile__section .btn-container button {
+.profile__section .btn-container button, nav button {
   width: 150px;
   border-radius: 0.2rem;
   font-size: 15px;

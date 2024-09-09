@@ -1,22 +1,24 @@
 export function MembersTable() {
   return (
     <table>
-      <tr>
-        <th>STATUS</th>
-        <th>NAME</th>
-        <th>RANK</th>
-        <th>DOMAIN</th>
-        <th>AUTH</th>
-        <th>DATE JOINED</th>
-        <th>SELECT</th>
-        <th>
-          <span></span>
-        </th>
-        <th>
-          <span></span>
-        </th>
-      </tr>
-      <TableRowDetails />
+      <tbody>
+        <tr>
+          <th>STATUS</th>
+          <th>NAME</th>
+          <th>RANK</th>
+          <th>DOMAIN</th>
+          <th>AUTH</th>
+          <th>DATE JOINED</th>
+          <th>SELECT</th>
+          <th>
+            <span></span>
+          </th>
+          <th>
+            <span></span>
+          </th>
+        </tr>
+        <TableRowDetails />
+      </tbody>
     </table>
   );
 }

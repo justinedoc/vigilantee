@@ -1,13 +1,15 @@
-import profileImage from "../img/temp.jpg";
 import { ProfileForm } from "./ProfileForm";
+import { useFetchUser } from "./useFetchUser";
 
 export function ProfileSection() {
+  const { loading, currentUser } = useFetchUser();
+
   return (
     <div className="profile__section">
       <div className="img-container">
-        <img src={profileImage} alt="profile" />
+        <img src={currentUser?.profileImg} alt=" " />
       </div>
-      <ProfileForm />
+      <ProfileForm dependencies={{ loading, currentUser }} />
     </div>
   );
 }

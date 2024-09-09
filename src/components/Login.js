@@ -5,8 +5,13 @@ import eyeClosed from "../img/eyeClosed.svg";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { auth } from "../firebase/firebaseConfig";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+} from "firebase/auth";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 function Logo() {
   return <img className="logo" src={logo} alt="logo" />;
@@ -22,9 +27,9 @@ function LogoinHeaderText({ text }) {
 }
 
 function LogoinForm({
-  formDetails,
+  formDetails: details,
   formValues: { email, password },
-  formFunctions: { setEmail, setPassword },
+  formFunctions: { setEmail, setPassword, verifyInput },
 }) {
   const [passwordShowing, setPasswordShowing] = useState(false);
 
@@ -71,20 +76,26 @@ function LogoinForm({
           <input type="checkbox" />
           <span>Remember me</span>
         </div>
-        {formDetails.forLogin ? (
+        {details.forLogin ? (
           <div className="forgot_password">
             <span>forgot password?</span>
           </div>
         ) : null}
       </div>
+      <LoginButtons
+        buttonText={details.action}
+        btnFunctions={{ verifyInput }}
+      />
     </form>
   );
 }
 
-function LoginButtons({ buttonText, btn }) {
+function LoginButtons({ buttonText, btnFunctions: { verifyInput } }) {
   return (
     <div className="btn__container">
-      <button>{buttonText}</button>
+      <button onClick={(e) => verifyInput(e)} type="submit">
+        {buttonText}
+      </button>
       <button>
         <img className="googleLogo" src={googleLogo} alt="google" />
         <span>{buttonText} with Google</span>
@@ -103,36 +114,101 @@ function LoginToSignUp({ text }) {
   );
 }
 
-export function LoginPage({ details }) {
+const handleshowLoadingModal = () => {
+  Swal.fire({
+    title: "Signing in...",
+    allowOutsideClick: false,
+    didOpen: () => {
+      Swal.showLoading();
+    },
+  });
+};
+
+const handlecloseLoadingModal = () => {
+  Swal.close();
+};
+
+export function LoginPage({ details, authStatus: { setIsAuthenticated } }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const showLoadingModal = () => {
-    Swal.fire({
-      title: "Loading...",
-      allowOutsideClick: false,
-      didOpen: () => {
-        Swal.showLoading();
-      },
-    });
-  };
+  const navigate = useNavigate();
 
-  const closeLoadingModal = () => {
-    Swal.close();
-  };
-
-  const signIn = async () => {
-    showLoadingModal();
+  const handlesignInOrSignUp = async (action, shouldWelcome = true) => {
+    handleshowLoadingModal("Signing in...");
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      closeLoadingModal();
+      await action(auth, email, password);
+
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          localStorage.setItem(
+            "user",
+            JSON.stringify({
+              userID: user.uid,
+              authenticated: true,
+            })
+          );
+
+          handlecloseLoadingModal();
+
+          shouldWelcome &&
+            Swal.fire({
+              title: "Login Successful",
+              icon: "success",
+            });
+        }
+      });
+
+      setIsAuthenticated(true);
+      if (details.forLogin) {
+        navigate("/dashboard");
+      } else {
+        navigate("/onboarding");
+      }
     } catch (err) {
-      console.error(err);
+      handlecloseLoadingModal();
+      if (err.code === "auth/invalid-credential") {
+        Swal.fire({
+          title: "Invalid Credential",
+          text: "The password or email you entered is incorrect. Please try again.",
+          icon: "error",
+        });
+      } else {
+        Swal.fire({
+          title: "...Oops",
+          text: "Something went wrong",
+          icon: "error",
+        });
+      }
+
+      if (err.code === "auth/email-already-in-use") {
+        Swal.fire({
+          title: "Error",
+          text: "Account is Already in use",
+          icon: "error",
+        });
+        navigate("/login");
+      }
+      console.error(err.message);
     }
   };
 
-  const verifyInput = () => {
-    if (email && password) signIn();
+  const verifyInput = (e) => {
+    e.preventDefault();
+    if (email && password) {
+      details.forLogin
+        ? handlesignInOrSignUp(signInWithEmailAndPassword)
+        : handlesignInOrSignUp(createUserWithEmailAndPassword, false);
+    } else {
+      Swal.fire({
+        title: "Error",
+        text: `Input login details to ${
+          details.forLogin ? "login" : "sign up"
+        }`,
+        icon: "error",
+      });
+    }
+    console.log("clicked");
   };
   return (
     <div className="login__container">
@@ -145,9 +221,8 @@ export function LoginPage({ details }) {
         <LogoinForm
           formDetails={details}
           formValues={{ email, password }}
-          formFunctions={{ setEmail, setPassword }}
+          formFunctions={{ setEmail, setPassword, verifyInput }}
         />
-        <LoginButtons buttonText={details.action} btnFunctions={{ verifyInput }} />
         <LoginToSignUp text={details} />
       </div>
     </div>

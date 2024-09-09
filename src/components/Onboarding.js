@@ -3,8 +3,16 @@ import noProfile from "../img/noprofile.png";
 import addButton from "../img/addCircle.svg";
 import { db, storage } from "../firebase/firebaseConfig";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { auth } from "../firebase/firebaseConfig";
 import loadingAnim from "../img/loading.svg";
 import { useState } from "react";
+import { addDoc, collection } from "firebase/firestore";
+import {
+  handlecloseLoadingModal,
+  handleshowLoadingModal,
+} from "./HandleLoadingModal";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 export function Onboarding() {
   return <SignUpForm />;
@@ -19,6 +27,15 @@ function SignUpForm() {
   const [rank, setRank] = useState("officer");
   const [level, setLevel] = useState("user");
 
+  const [file, setFile] = useState(null);
+  const [profile, setProfile] = useState(noProfile);
+
+  function getCurrentDate() {
+    const timeStamp = Date.now();
+    const date = new Date(timeStamp);
+    return date.toLocaleDateString("en-GB");
+  }
+
   const UserData = {
     surname,
     otherNames,
@@ -27,12 +44,51 @@ function SignUpForm() {
     address,
     rank,
     level,
+    shifts: 0,
+    scans: 0,
+    isVerified: false,
   };
+
+  const membersColRef = collection(db, "members");
+  const navigate = useNavigate();
+
+  async function onSubmitForm(event) {
+    event.preventDefault();
+    handleshowLoadingModal("Loading...");
+    try {
+      await addDoc(membersColRef, {
+        ...UserData,
+        user: JSON.parse(localStorage.getItem("user")),
+        userID: auth?.currentUser?.uid,
+        getCurrentDate: getCurrentDate(),
+        profileImg: profile,
+      });
+      handlecloseLoadingModal();
+      Swal.fire({
+        title: "Login Successful",
+        icon: "success",
+      });
+      navigate("/");
+    } catch (err) {
+      Swal.fire({
+        title: "Error",
+        text: "An error has occured, please try again later",
+        icon: "error",
+        timer: 4000,
+      });
+      console.log(err);
+    }
+  }
 
   return (
     <form className={OnboardingStyles.signup__form__container}>
       <h1 className={OnboardingStyles.signup__header}>Let us Know You!</h1>
-      <ImageContainer />
+      <ImageContainer
+        file={file}
+        profile={profile}
+        setFile={setFile}
+        setProfile={setProfile}
+      />
       <div className={OnboardingStyles.input_box}>
         <input
           type="text"
@@ -84,26 +140,27 @@ function SignUpForm() {
         </select>
       </div>
       <div className={OnboardingStyles.btn__container}>
-        <button className={OnboardingStyles.btn}>Continue</button>
+        <button
+          onClick={(e) => onSubmitForm(e)}
+          className={OnboardingStyles.btn}
+        >
+          Continue
+        </button>
       </div>
     </form>
   );
 }
 
-function ImageContainer() {
-  const [file, setFile] = useState(null);
-  const [profile, setProfile] = useState(noProfile);
-
+function ImageContainer({ file, setFile, profile, setProfile }) {
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
     handelFileUpload();
   };
 
   const handelFileUpload = async () => {
+    if (!file) return;
     setProfile(loadingAnim);
-
     try {
-      if (!file) return;
       const storageRef = ref(storage, `files${file.name}`);
       await uploadBytes(storageRef, file);
       const downloadURL = await getDownloadURL(storageRef);
