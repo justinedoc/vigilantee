@@ -42,7 +42,9 @@ export function Main({ data: { modalOpen, userID, setModalOpen } }) {
     code: qrCode,
     loadingQRCode,
     setLoadingQRCode,
-  } = useGenerateUserQrCode(`https://umuome-vigilantee.vercel.app/view/users/${user?.id.trim()}`);
+  } = useGenerateUserQrCode(
+    `https://umuome-vigilantee.vercel.app/view/${user?.id.trim()}`
+  );
 
   modalOpen &&
     setTimeout(() => {

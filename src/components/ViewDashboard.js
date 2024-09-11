@@ -1,19 +1,34 @@
 import dasboardStyles from "../dashboardView.module.css";
 import { useParams } from "react-router-dom";
-import { useFetchUser } from "./useFetchUser";
 import loadingSVG from "../img/circleLoading.svg";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../firebase/firebaseConfig";
+import { useEffect, useState } from "react";
 
 export function ViewDashboard() {
+  const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState(null);
   const { id } = useParams();
 
-  const { allMembers, loading } = useFetchUser();
-  console.log(allMembers);
-  const user = allMembers.find((member) => member.id === id);
+  useEffect(() => {
+    const userColRef = collection(db, "members");
+    async function getUser() {
+      setLoading(true);
+      try {
+        const data = await getDocs(userColRef);
+        const users = data.docs.map((user) => ({
+          ...user.data(),
+          id: user.id,
+        }));
+        setLoading(false);
+        setUser(users.find((user) => user.id === id));
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    getUser();
 
-  if (!loading && !user) {
-    return <h1>User with {id} was not found</h1>;
-  }
-
+  }, [id]);
   return !loading ? (
     <div className={dasboardStyles.dashboard__view}>
       <div className={dasboardStyles.dashboard__profile_info}>
@@ -62,7 +77,7 @@ function Works({ userData }) {
     <div className={dasboardStyles.work__section}>
       <div className={dasboardStyles.work}>
         <div className={dasboardStyles.work__text}>
-          {userData.isVerified ? (
+          {userData?.isVerified ? (
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
