@@ -62,7 +62,7 @@ export const useChangeNum = () => {
           height="35"
           viewBox="0 0 24 24"
           style={
-            currentUser?.verifiedStatus
+            currentUser?.isVerified
               ? { fill: "#006644" }
               : { fill: "#910215" }
           }

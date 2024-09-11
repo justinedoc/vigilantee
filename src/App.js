@@ -10,11 +10,12 @@ import {
   Routes,
   Navigate,
 } from "react-router-dom";
-import { Onboarding } from "./components/Onboarding";
+import { Onboarding, UpdateProfile } from "./components/Onboarding";
 import signUpImg from "./img/signupImage.png";
 import signInImg from "./img/loginImage.png";
 import { useEffect, useState } from "react";
 import loadingSVG from "./img/loading.svg";
+import { ViewDashboard } from "./components/ViewDashboard";
 
 const loginPageDetails = {
   headerTexts: ["Welcome Back!", "Please enter your details"],
@@ -34,13 +35,16 @@ export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  const writeUp = {
+    text: "hello world",
+  };
+
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     console.log("User from localStorage:", user);
 
     if (user?.authenticated) {
       setIsAuthenticated(true);
-      console.log("isAuthenticated set");
     } else {
       setIsAuthenticated(false);
     }
@@ -99,6 +103,12 @@ export default function App() {
           }
         />
         <Route path="/onboarding" element={<Onboarding />} />
+
+        <Route
+          path="/dashboard/edit"
+          element={<UpdateProfile writeUp={writeUp} />}
+        />
+        <Route path="/view/users/:id" element={<ViewDashboard />} />
         <Route path="/" element={<Navigate to="/signup" />} />
       </Routes>
     </Router>
@@ -106,11 +116,15 @@ export default function App() {
 }
 
 function Dashboard({ authStatus }) {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [userID, setUserID] = useState(null);
+  const compsRequirements = { modalOpen, setModalOpen, userID, setUserID };
+
   return (
     <>
       <Navbar authStatus={authStatus} />
-      <Main />
-      <MembersSection />
+      <Main data={compsRequirements} />
+      <MembersSection data={compsRequirements} />
     </>
   );
 }

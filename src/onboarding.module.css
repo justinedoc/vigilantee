@@ -27,15 +27,15 @@
 }
 
 .signup__form__container .img__container {
-  width: 25%;
+  width: 200px;
+  height: 200px;
   margin-bottom: 30px;
   position: relative;
-  background: #59595915;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  border: none;
+ 
 }
 
 .img__container img:not(img.profile__img),
@@ -61,10 +61,10 @@
 }
 
 .signup__form__container img.profile__img {
-  width: 100%;
-  height: 100%;
-  aspect-ratio: 0.9;
+  width: 200px;
+  height: 200px;
   border-radius: 50%;
+  object-fit: cover;
 }
 
 .signup__form__container .input_box {

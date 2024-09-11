@@ -1,6 +1,8 @@
 import circleLoading from "../img/circleLoading.svg";
+import { useNavigate } from "react-router-dom";
 
 export function ProfileForm({ dependencies: { loading, currentUser } }) {
+  const navigate = useNavigate();
   return loading ? (
     <img
       src={circleLoading}
@@ -50,7 +52,9 @@ export function ProfileForm({ dependencies: { loading, currentUser } }) {
       </form>
       <div className="btn-container">
         <button>Print ID</button>
-        <button>Update Profile</button>
+        <button onClick={() => navigate("/dashboard/edit")}>
+          Update Profile
+        </button>
       </div>
     </>
   );

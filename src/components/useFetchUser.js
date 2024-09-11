@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 export function useFetchUser() {
   const [loading, setLoading] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
+  const [allMembers, setAllmembers] = useState([]);
 
   useEffect(() => {
     const userColRef = collection(db, "members");
@@ -18,6 +19,8 @@ export function useFetchUser() {
           ...user.data(),
           id: user.id,
         }));
+
+        // console.log("filtered data", filteredDataForUsers)
 
         const loggedInUser = JSON.parse(localStorage.getItem("user"));
         if (!loggedInUser || !loggedInUser.userID) {
@@ -35,6 +38,7 @@ export function useFetchUser() {
         }
 
         setCurrentUser(currentUserData || {});
+        setAllmembers(filteredDataForUsers || [])
         setLoading(false);
       } catch (err) {
         console.log(err);
@@ -47,5 +51,5 @@ export function useFetchUser() {
     };
     getUser();
   }, []);
-  return { loading, currentUser };
+  return { loading, currentUser, allMembers };
 }

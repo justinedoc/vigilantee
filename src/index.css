@@ -36,7 +36,12 @@ nav.navbar {
   position: sticky;
   top: 0;
   left: 0;
-  box-shadow: 10px 10px 10px #0000000c;
+  box-shadow: 10px 10px 10px #00000004;
+}
+
+nav.navbar button {
+  font-weight: 600;
+  width: 120px;
 }
 
 /* PROFILE SECTION  */
@@ -101,6 +106,7 @@ nav.navbar {
   outline: none;
   background: transparent;
   font-size: 17px;
+  text-transform: capitalize;
 }
 
 .profile__section .btn-container {
@@ -112,10 +118,11 @@ nav.navbar {
   gap: 10px;
 }
 
-.profile__section .btn-container button, nav button {
+.profile__section .btn-container button,
+nav button {
   width: 150px;
   border-radius: 0.2rem;
-  font-size: 15px;
+  font-size: 16px;
   padding: 10px;
   border: none;
   outline: none;
@@ -240,6 +247,7 @@ input:disabled {
 .member__table-filter span {
   font-weight: 600;
   padding: 0 10px;
+  cursor: pointer;
 }
 
 span.active {
@@ -259,6 +267,7 @@ span.active {
 
 .member__table-head h1 {
   font-weight: 550;
+  text-transform: capitalize;
 }
 
 .member__table-head .btn_box {
@@ -325,8 +334,13 @@ span.active {
   transition: 200ms ease;
 }
 
-.member__table-main button.verify:hover {
+.member__table-main button.verify:hover:not(:disabled) {
   opacity: 0.9;
+}
+
+.member__table-main button.verify:disabled {
+  background: #959da4;
+  pointer-events: none;
 }
 
 .member__table-main table td input {
@@ -345,4 +359,60 @@ span.active {
 
 .member__table-main button.edit__btn:hover {
   text-decoration: underline;
+}
+
+/* MODAL SECTION  */
+
+.background {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: #00000039;
+  display: flex;
+  justify-content: center;
+}
+
+.background .member__modal {
+  width: 350px;
+  background: #fff;
+  padding: 2rem;
+  border-radius: 5px;
+  height: fit-content;
+  margin-top: 3rem;
+}
+
+.member__modal .img_box {
+  width: 100%;
+  padding: .5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.member__modal .img_box img {
+  width: 150px;
+  margin: 10px 0;
+}
+
+.member__modal .actions .shifts {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.member__modal .img_box img + span {
+  font-size: 13px;
+}
+
+.member__modal .actions .shifts h3 ~ span {
+  font-weight: 600;
+  font-size: 2rem;
+}
+
+.member__modal .btn__container {
+  width: 100%;
+  display: flex;
+  padding: 0.3rem;
+  justify-content: space-between;
 }
