@@ -328,6 +328,7 @@ span.active {
 
 .member__table-main table td .verify {
   border: none;
+  height: 30px;
   padding: initial 20px;
   background: #00704b;
   color: #fff;
