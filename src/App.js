@@ -66,6 +66,7 @@ export default function App() {
   ) : (
     <Router>
       <Routes>
+        <Route path="/view/users/:id" element={<ViewDashboard />} />
         <Route
           path="/dashboard"
           element={
@@ -108,7 +109,6 @@ export default function App() {
           path="/dashboard/edit"
           element={<UpdateProfile writeUp={writeUp} />}
         />
-        <Route path="/view/users/:id" element={<ViewDashboard />} />
         <Route path="/" element={<Navigate to="/signup" />} />
       </Routes>
     </Router>
