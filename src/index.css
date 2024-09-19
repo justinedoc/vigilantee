@@ -575,12 +575,4 @@ span.active {
     padding: 1rem 2rem;
     height: unset;
   }
-
-  .btn__container button {
-    border-radius: 20px;
-  }
-
-  .btn__container button:first-child {
-    width: 90px;
-  }
 }
