@@ -6,7 +6,6 @@ import {
   handlecloseLoadingModal,
   handleshowLoadingModal,
 } from "./HandleLoadingModal";
-import { Logo } from "./Login";
 
 export function ProfileForm({ dependencies: { loading, currentUser } }) {
   const handleDownloadPdf = async () => {

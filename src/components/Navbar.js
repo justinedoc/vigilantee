@@ -1,6 +1,5 @@
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
-import avatarImg from "../img/temp.jpg";
 import exitIcon from "../img/exit.svg";
 import {
   handlecloseLoadingModal,
