@@ -28,20 +28,91 @@ main {
 /* NAVBAR SECTION  */
 
 nav.navbar {
-  padding: 20px;
+  padding: 1rem 2rem;
+  height: 10vh;
   background: #ffff;
   width: 100%;
   display: flex;
-  justify-content: right;
+  align-items: center;
+  justify-content: space-between;
   position: sticky;
   top: 0;
   left: 0;
-  box-shadow: 10px 10px 10px #00000004;
+  box-shadow: 10px 10px 10px #0000000c;
+}
+
+nav .logo img {
+  width: 50px;
+  padding: 0;
+}
+
+nav .nav__options {
+  width: 100px;
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.nav__options > img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+nav > .logo {
+  display: flex;
+  align-items: center;
+}
+
+nav > .logo span {
+  font-size: 2rem;
+  font-weight: 600;
+  letter-spacing: -2px;
+  margin-top: auto;
+  color: #000;
+}
+
+nav .hambuger {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 17px;
+  width: 30px;
+  margin-right: 1rem;
+  cursor: pointer;
+}
+
+.hambuger > div {
+  width: 100%;
+  height: 2px;
+  transition: all 0.3s ease-in-out;
+  background: #000;
+}
+
+.hambuger.close > div:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hambuger.close > div:nth-child(2) {
+  opacity: 0;
+}
+
+.hambuger.close > div:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -6px);
+}
+
+nav .exitIcon {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
 }
 
 nav.navbar button {
   font-weight: 600;
   width: 120px;
+  height: 6vh;
 }
 
 /* PROFILE SECTION  */
@@ -118,8 +189,7 @@ nav.navbar button {
   gap: 10px;
 }
 
-.profile__section .btn-container button,
-nav button {
+.profile__section .btn-container button {
   width: 150px;
   border-radius: 0.2rem;
   font-size: 16px;
@@ -168,7 +238,7 @@ input:disabled {
 }
 
 .analytics__section .main-dash .dashboard {
-  width: 280px;
+  width: 270px;
   height: 180px;
   padding: 1rem 1.75rem;
   border-radius: 1rem;
@@ -384,7 +454,7 @@ span.active {
 
 .member__modal .img_box {
   width: 100%;
-  padding: .5rem;
+  padding: 0.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -416,4 +486,101 @@ span.active {
   display: flex;
   padding: 0.3rem;
   justify-content: space-between;
+}
+
+@media only screen and (max-width: 979px) {
+  main {
+    width: 100%;
+    background: #ffff;
+    display: flex;
+  }
+  .profile__section {
+    position: fixed;
+    left: -300px;
+    transition: 200ms ease;
+  }
+
+  .profile__section.open {
+    left: 0;
+  }
+
+  .profile__section .btn-container {
+    margin: unset;
+    margin-top: 1rem;
+    width: 100%;
+  }
+
+  .analytics__section {
+    width: 100%;
+    grid-area: unset;
+    align-items: center;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .analytics__section .main-dash {
+    width: 96%;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .analytics__section .main-dash .dashboard {
+    width: calc(96% / 2);
+    height: unset;
+    padding: 2rem;
+    font-size: 1.3rem;
+  }
+
+  .analytics__section .main-dash .dashboard:last-child {
+    width: 96%;
+  }
+
+  .announcments {
+    display: flex;
+    justify-content: center;
+  }
+
+  .announcments img {
+    width: 60%;
+    height: 15rem;
+    margin: 0;
+  }
+
+  .member__table__section {
+    padding: 2rem;
+  }
+
+  .member__table-main {
+    overflow-x: scroll;
+  }
+
+  .member__table-main table th,
+  .member__table-main table td {
+    padding: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.1;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .analytics__section .main-dash .dashboard {
+    width: 96%;
+  }
+
+  .analytics__section {
+    padding: 1rem;
+  }
+  nav.navbar {
+    padding: 1rem 2rem;
+    height: unset;
+  }
+
+  .btn__container button {
+    border-radius: 20px;
+  }
+
+  .btn__container button:first-child {
+    width: 90px;
+  }
 }

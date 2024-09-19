@@ -13,7 +13,7 @@ import Swal from "sweetalert2";
 import { useGenerateUserQrCode } from "./useGenerateUserQrCode";
 import circleLoading from "../img/circleLoading.svg";
 
-export function Main({ data: { modalOpen, userID, setModalOpen } }) {
+export function Main({ data: { modalOpen, userID, setModalOpen }, navOpen }) {
   const { allMembers, loading } = useFetchUser();
   const [addShift, setAddShift] = useState(0);
 
@@ -80,7 +80,7 @@ export function Main({ data: { modalOpen, userID, setModalOpen } }) {
 
   return (
     <main className="container">
-      <ProfileSection />
+      <ProfileSection navOpen={navOpen} />
       <div className="analytics__section">
         <AnalyticsSection />
         <Activities />

@@ -16,6 +16,7 @@ import signInImg from "./img/loginImage.png";
 import { useEffect, useState } from "react";
 import loadingSVG from "./img/loading.svg";
 import { ViewDashboard } from "./components/ViewDashboard";
+import { IDCard } from "./components/IDCard";
 
 const loginPageDetails = {
   headerTexts: ["Welcome Back!", "Please enter your details"],
@@ -119,11 +120,20 @@ function Dashboard({ authStatus }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [userID, setUserID] = useState(null);
   const compsRequirements = { modalOpen, setModalOpen, userID, setUserID };
+  const [navOpen, setNavOpen] = useState(false);
+
+  function handleSetNavOpen() {
+    setNavOpen((cur) => !cur);
+  }
 
   return (
     <>
-      <Navbar authStatus={authStatus} />
-      <Main data={compsRequirements} />
+      <Navbar
+        authStatus={authStatus}
+        onHandleSetNavOpen={handleSetNavOpen}
+        navOpen={navOpen}
+      />
+      <Main data={compsRequirements} navOpen={navOpen} />
       <MembersSection data={compsRequirements} />
     </>
   );

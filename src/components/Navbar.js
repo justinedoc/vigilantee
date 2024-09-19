@@ -1,13 +1,19 @@
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
-
+import avatarImg from "../img/temp.jpg";
+import exitIcon from "../img/exit.svg";
 import {
   handlecloseLoadingModal,
   handleshowLoadingModal,
 } from "./HandleLoadingModal";
+import { Logo } from "./Login";
+import { useFetchUser } from "./useFetchUser";
 
-export function Navbar({ authStatus: { setIsAuthenticated } }) {
-
+export function Navbar({
+  authStatus: { setIsAuthenticated },
+  onHandleSetNavOpen,
+  navOpen,
+}) {
   async function handleLogOut() {
     handleshowLoadingModal("Logging out...");
     try {
@@ -21,9 +27,36 @@ export function Navbar({ authStatus: { setIsAuthenticated } }) {
       console.error(err);
     }
   }
+  const { currentUser } = useFetchUser();
+
   return (
     <nav className="navbar">
-      <button onClick={handleLogOut}>Logout</button>
+      <div className="logo">
+        <div
+          className={`hambuger ${navOpen && "close"}`}
+          onClick={onHandleSetNavOpen}
+        >
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        {window.screen.availWidth >= 480 ? (
+          <>
+            <Logo />
+            <span>Vigilantee</span>
+          </>
+        ) : null}
+      </div>
+
+      <div className="nav__options">
+        <img src={currentUser?.profileImg} alt="avatar" className="avatar" />
+        <img
+          className="exitIcon"
+          src={exitIcon}
+          alt="exit"
+          onClick={handleLogOut}
+        />
+      </div>
     </nav>
   );
 }

@@ -13,7 +13,7 @@ import {
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 
-function Logo() {
+export function Logo() {
   return <img className="logo" src={logo} alt="logo" />;
 }
 
@@ -40,6 +40,7 @@ function LogoinForm({
           value={email}
           type="email"
           name="email"
+          id="email"
           required={true}
           placeholder="email"
           onChange={(e) => setEmail(e.target.value)}
@@ -53,6 +54,7 @@ function LogoinForm({
           value={password}
           type={passwordShowing ? "text" : "password"}
           name="password"
+          id="password"
           minLength={6}
           placeholder="password"
           required={true}
