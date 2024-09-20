@@ -23,7 +23,7 @@ export const useChangeNum = () => {
         </svg>
       ),
       num: currentUser?.shifts,
-      id: crypto.randomUUID(),
+      id: 12345678,
     },
 
     {
@@ -45,7 +45,7 @@ export const useChangeNum = () => {
         </svg>
       ),
       num: currentUser?.scans,
-      id: crypto.randomUUID(),
+      id: 1234567,
     },
 
     {
@@ -71,7 +71,7 @@ export const useChangeNum = () => {
         </svg>
       ),
       num: currentUser?.isVerified,
-      id: crypto.randomUUID(),
+      id: 12345,
     },
   ];
 
