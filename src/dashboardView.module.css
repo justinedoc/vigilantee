@@ -165,6 +165,7 @@
   .profile__info .name {
     font-size: 1.5rem;
     text-transform: uppercase;
+    margin-bottom: 1rem;
   }
 
   .profile__info label {
@@ -173,6 +174,7 @@
 
   .profile__info label + h4 {
     font-size: 1rem;
+    margin-bottom: 1rem;
   }
 
   .headtags__section {
