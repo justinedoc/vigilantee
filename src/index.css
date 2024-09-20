@@ -104,8 +104,8 @@ nav .hambuger {
 }
 
 nav .exitIcon {
-  width: 30px;
-  height: 30px;
+  width: 25px;
+  height: 25px;
   cursor: pointer;
 }
 
@@ -496,6 +496,7 @@ span.active {
   }
   .profile__section {
     position: fixed;
+    padding: 1rem;
     left: -300px;
     transition: 200ms ease;
   }
@@ -571,6 +572,7 @@ span.active {
   .analytics__section {
     padding: 1rem;
   }
+  
   nav.navbar {
     padding: 1rem 2rem;
     height: unset;

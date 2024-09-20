@@ -208,4 +208,17 @@
     width: 100%;
     padding: 1rem;
   }
+
+  .work:first-child .work__text {
+    gap: 0;
+  }
+
+  .work:first-child .work__text svg {
+    width: 70px;
+    height: 70px;
+  }
+
+  .work__section .work {
+    padding: 1rem;
+  }
 }

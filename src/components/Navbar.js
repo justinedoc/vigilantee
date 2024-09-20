@@ -31,14 +31,16 @@ export function Navbar({
   return (
     <nav className="navbar">
       <div className="logo">
-        <div
-          className={`hambuger ${navOpen && "close"}`}
-          onClick={onHandleSetNavOpen}
-        >
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
+        {!(window.screen.availWidth >= 979) && (
+          <div
+            className={`hambuger ${navOpen && "close"}`}
+            onClick={onHandleSetNavOpen}
+          >
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        )}
         {window.screen.availWidth >= 480 ? (
           <>
             <Logo />

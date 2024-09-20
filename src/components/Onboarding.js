@@ -41,9 +41,14 @@ function SignUpForm({ forUpdate }) {
   useEffect(() => {
     setUpdateForProfile(currentUser?.profileImg);
     if (forUpdate) {
-      currentUser?.isVerified ? setLevel("admin") : setLevel("user");
+      currentUser?.isVerified && level === "admin"
+        ? setLevel("admin")
+        : setLevel("user");
+
+      setRank(currentUser?.rank);
+      setIsIndegene(currentUser?.isIndegene);
     }
-  }, [currentUser, forUpdate]);
+  }, [currentUser, forUpdate, level]);
 
   const navigate = useNavigate();
 
@@ -194,13 +199,11 @@ function SignUpForm({ forUpdate }) {
           <option value={"CSO"}>CSO</option>
         </select>
         <select
-          disabled={currentUser?.level === "admin" ? false : true}
+          disabled
           value={level}
           onChange={(e) => setLevel(e.target.value)}
         >
-          <option value={null}>Select Level</option>
-          <option value="user">User</option>
-          <option value="admin">Admin</option>
+          <option value="user">{level.toLocaleUpperCase()}</option>
         </select>
       </div>
       <div className={OnboardingStyles.btn__container}>
@@ -247,9 +250,16 @@ function ImageContainer({
         src={forUpdate ? updateForProfile : profile}
         alt=" "
       />
-      <img src={addButton} alt="addbtn" />
+      <img
+        src={addButton}
+        alt="addbtn"
+        onClick={() => {
+          document.getElementById("uploadProfile").click();
+        }}
+      />
       <input
         type="file"
+        id="uploadProfile"
         accept=".jpeg, .png, .jpg"
         name="profilePhoto"
         onChange={(e) => handleFileChange(e)}
