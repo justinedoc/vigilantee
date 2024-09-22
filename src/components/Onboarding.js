@@ -1,8 +1,7 @@
 import OnboardingStyles from "../onboarding.module.css";
 import noProfile from "../img/noprofile.png";
 import addButton from "../img/addCircle.svg";
-import { db, storage } from "../firebase/firebaseConfig";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { db } from "../firebase/firebaseConfig";
 import { auth } from "../firebase/firebaseConfig";
 import loadingAnim from "../img/loading.svg";
 import { useEffect, useState } from "react";
@@ -39,14 +38,20 @@ function SignUpForm({ forUpdate }) {
   const [updateForProfile, setUpdateForProfile] = useState(null);
 
   useEffect(() => {
-    setUpdateForProfile(currentUser?.profileImg);
     if (forUpdate) {
-      currentUser?.isVerified && level === "admin"
+      currentUser?.isVerified && currentUser?.level === "admin"
         ? setLevel("admin")
         : setLevel("user");
 
+      setUpdateForProfile(currentUser?.profileImg);
       setRank(currentUser?.rank);
       setIsIndegene(currentUser?.isIndegene);
+      setSurname(currentUser?.surname);
+      setOtherNames(currentUser?.otherNames);
+      setPhoneNumber(currentUser?.phoneNumber);
+      setAddress(currentUser?.address);
+      setIsIndegene(currentUser?.isIndegene);
+      setRank(currentUser?.rank);
     }
   }, [currentUser, forUpdate, level]);
 
@@ -152,28 +157,25 @@ function SignUpForm({ forUpdate }) {
         <input
           type="text"
           placeholder="Surname"
-          value={surname || currentUser?.surname}
+          value={surname}
           onChange={(e) => setSurname(e.target.value)}
-          onClick={(e) => (e.target.value = "")}
         />
         <input
           type="text"
           placeholder="Other names"
-          value={otherNames || currentUser?.otherNames}
+          value={otherNames}
           onChange={(e) => setOtherNames(e.target.value)}
-          onClick={(e) => (e.target.value = "")}
         />
       </div>
       <div className={OnboardingStyles.input_box}>
         <input
           type="text"
           placeholder="Mobile phone"
-          value={phoneNumber || currentUser?.phoneNumber}
+          value={phoneNumber}
           onChange={(e) => setPhoneNumber(e.target.value)}
-          onClick={(e) => (e.target.value = "")}
         />
         <select
-          value={isIndegene || currentUser?.isIndegene}
+          value={isIndegene}
           onChange={(e) => setIsIndegene(e.target.value)}
         >
           <option value={null}>An Indegene?</option>
@@ -185,16 +187,12 @@ function SignUpForm({ forUpdate }) {
         <input
           type="text"
           placeholder="Address"
-          value={address || currentUser?.address}
+          value={address}
           onChange={(e) => setAddress(e.target.value)}
-          onClick={(e) => (e.target.value = "")}
         />
       </div>
       <div className={OnboardingStyles.input_box}>
-        <select
-          value={rank || currentUser?.rank}
-          onChange={(e) => setRank(e.target.value)}
-        >
+        <select value={rank} onChange={(e) => setRank(e.target.value)}>
           <option value={"Officer"}>Officer</option>
           <option value={"CSO"}>CSO</option>
         </select>
@@ -203,7 +201,7 @@ function SignUpForm({ forUpdate }) {
           value={level}
           onChange={(e) => setLevel(e.target.value)}
         >
-          <option value="user">{level.toLocaleUpperCase()}</option>
+          <option value={level}>{level.toLocaleUpperCase()}</option>
         </select>
       </div>
       <div className={OnboardingStyles.btn__container}>
@@ -232,12 +230,17 @@ function ImageContainer({
     setProfile(loadingAnim);
     setUpdateForProfile(loadingAnim);
     try {
-      const storageRef = ref(storage, `files${file.name}`);
-      await uploadBytes(storageRef, file);
+      // const storageRef = ref(storage, `files${file.name}`);
+      // await uploadBytes(storageRef, file);
 
-      const downloadURL = await getDownloadURL(storageRef);
-      setProfile(downloadURL);
-      setUpdateForProfile(downloadURL);
+      // const downloadURL = await getDownloadURL(storageRef);
+
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        setProfile(reader.result);
+        setUpdateForProfile(reader.result);
+      };
     } catch (err) {
       console.log(err);
     }

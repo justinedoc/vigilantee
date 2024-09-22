@@ -2,11 +2,14 @@ import { getDocs, collection } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 export function useFetchUser() {
   const [loading, setLoading] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
   const [allMembers, setAllmembers] = useState([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const userColRef = collection(db, "members");
@@ -35,10 +38,11 @@ export function useFetchUser() {
 
         if (!currentUserData) {
           console.log("No matching user found in Firebase");
+          navigate("/onboarding");
         }
 
         setCurrentUser(currentUserData || {});
-        setAllmembers(filteredDataForUsers || [])
+        setAllmembers(filteredDataForUsers || []);
         setLoading(false);
       } catch (err) {
         console.log(err);
@@ -50,6 +54,6 @@ export function useFetchUser() {
       }
     };
     getUser();
-  }, []);
+  }, [navigate]);
   return { loading, currentUser, allMembers };
 }

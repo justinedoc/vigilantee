@@ -1,8 +1,5 @@
-import { Navbar } from "./components/Navbar";
 import "./index.css";
 import "./login.css";
-import { MembersSection } from "./components/MembersSection";
-import { Main } from "./components/Main";
 import { LoginPage } from "./components/Login";
 import {
   BrowserRouter as Router,
@@ -16,6 +13,7 @@ import signInImg from "./img/loginImage.png";
 import { useEffect, useState } from "react";
 import loadingSVG from "./img/loading.svg";
 import { ViewDashboard } from "./components/ViewDashboard";
+import { Dashboard } from "./components/Dashboard";
 import { IDCard } from "./components/IDCard";
 
 const loginPageDetails = {
@@ -103,6 +101,7 @@ export default function App() {
             )
           }
         />
+        
         <Route path="/onboarding" element={<Onboarding />} />
 
         <Route
@@ -110,31 +109,9 @@ export default function App() {
           element={<UpdateProfile writeUp={writeUp} />}
         />
         <Route path="/" element={<Navigate to="/signup" />} />
+        <Route path="/dashboard/id-card" element={<IDCard />} />
         <Route path="/view/:id" element={<ViewDashboard />} />
       </Routes>
     </Router>
-  );
-}
-
-function Dashboard({ authStatus }) {
-  const [modalOpen, setModalOpen] = useState(false);
-  const [userID, setUserID] = useState(null);
-  const compsRequirements = { modalOpen, setModalOpen, userID, setUserID };
-  const [navOpen, setNavOpen] = useState(false);
-
-  function handleSetNavOpen() {
-    setNavOpen((cur) => !cur);
-  }
-
-  return (
-    <>
-      <Navbar
-        authStatus={authStatus}
-        onHandleSetNavOpen={handleSetNavOpen}
-        navOpen={navOpen}
-      />
-      <Main data={compsRequirements} navOpen={navOpen} />
-      <MembersSection data={compsRequirements} />
-    </>
   );
 }

@@ -17,6 +17,8 @@ export function Main({ data: { modalOpen, userID, setModalOpen }, navOpen }) {
   const { allMembers, loading } = useFetchUser();
   const [addShift, setAddShift] = useState(0);
 
+  
+
   const user = allMembers.find((member) => member.id === userID);
   useEffect(() => {
     function handleInitailShift() {

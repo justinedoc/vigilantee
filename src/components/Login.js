@@ -9,9 +9,15 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   onAuthStateChanged,
+  GoogleAuthProvider,
+  signInWithPopup,
 } from "firebase/auth";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import {
+  handlecloseLoadingModal,
+  handleshowLoadingModal,
+} from "./HandleLoadingModal";
 
 export function Logo() {
   return <img className="logo" src={logo} alt="logo" />;
@@ -29,9 +35,56 @@ function LogoinHeaderText({ text }) {
 function LogoinForm({
   formDetails: details,
   formValues: { email, password },
-  formFunctions: { setEmail, setPassword, verifyInput },
+  formFunctions: { setEmail, setPassword, verifyInput, signInWithGoogle },
 }) {
   const [passwordShowing, setPasswordShowing] = useState(false);
+
+  // function validatePassword(password) {
+  //   // Conditions
+  //   const conditions = [
+  //     {
+  //       regex: /[a-z]/,
+  //       message: "Password must contain at least one lowercase letter (a-z).",
+  //     },
+  //     {
+  //       regex: /[A-Z]/,
+  //       message: "Password must contain at least one uppercase letter (A-Z).",
+  //     },
+  //     {
+  //       regex: /[0-9]/,
+  //       message: "Password must contain at least one digit (0-9).",
+  //     },
+  //     {
+  //       regex: /[!@#\$%\^&\*]/,
+  //       message:
+  //         "Password must contain at least one special character (!@#$%^&*).",
+  //     },
+  //     {
+  //       regex: /.{8,}/,
+  //       message: "Password must be at least 8 characters long.",
+  //     },
+  //   ];
+
+  //   let errors = [];
+
+  //   conditions.forEach((condition) => {
+  //     if (!condition.regex.test(password)) {
+  //       errors.push(condition.message);
+  //     }
+  //   });
+
+  //   if (errors.length === 0) {
+  //     return {
+  //       isValid: true,
+  //       message: "Password is strong!",
+  //     };
+  //   } else {
+  //     return {
+  //       isValid: false,
+  //       errors: errors,
+  //     };
+  //   }
+  // }
 
   return (
     <form className="login__form">
@@ -57,7 +110,7 @@ function LogoinForm({
           id="password"
           minLength={6}
           placeholder="password"
-          required={true}
+          required
           onChange={(e) => setPassword(e.target.value)}
         />
         <label htmlFor="password" className="password_label">
@@ -86,19 +139,22 @@ function LogoinForm({
       </div>
       <LoginButtons
         buttonText={details.action}
-        btnFunctions={{ verifyInput }}
+        btnFunctions={{ verifyInput, signInWithGoogle }}
       />
     </form>
   );
 }
 
-function LoginButtons({ buttonText, btnFunctions: { verifyInput } }) {
+function LoginButtons({
+  buttonText,
+  btnFunctions: { verifyInput, signInWithGoogle },
+}) {
   return (
     <div className="btn__container">
-      <button onClick={(e) => verifyInput(e)} type="submit">
+      <button onClick={verifyInput} type="submit">
         {buttonText}
       </button>
-      <button>
+      <button onClick={signInWithGoogle}>
         <img className="googleLogo" src={googleLogo} alt="google" />
         <span>{buttonText} with Google</span>
       </button>
@@ -116,30 +172,23 @@ function LoginToSignUp({ text }) {
   );
 }
 
-const handleshowLoadingModal = () => {
-  Swal.fire({
-    title: "Signing in...",
-    allowOutsideClick: false,
-    didOpen: () => {
-      Swal.showLoading();
-    },
-  });
-};
-
-const handlecloseLoadingModal = () => {
-  Swal.close();
-};
-
 export function LoginPage({ details, authStatus: { setIsAuthenticated } }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const googleProvider = new GoogleAuthProvider();
   const navigate = useNavigate();
 
-  const handlesignInOrSignUp = async (action, shouldWelcome = true) => {
+  const handlesignInOrSignUp = async (
+    action,
+    email,
+    password,
+    shouldWelcome = true
+  ) => {
     handleshowLoadingModal("Signing in...");
     try {
-      await action(auth, email, password);
+      email && password
+        ? await action(auth, email, password)
+        : await action(auth, googleProvider);
 
       onAuthStateChanged(auth, (user) => {
         if (user) {
@@ -162,6 +211,7 @@ export function LoginPage({ details, authStatus: { setIsAuthenticated } }) {
       });
 
       setIsAuthenticated(true);
+
       if (details.forLogin) {
         navigate("/dashboard");
       } else {
@@ -195,12 +245,24 @@ export function LoginPage({ details, authStatus: { setIsAuthenticated } }) {
     }
   };
 
+  const signInWithGoogle = (e) => {
+    e.preventDefault();
+    details.forLogin
+      ? handlesignInOrSignUp(signInWithPopup)
+      : handlesignInOrSignUp(signInWithPopup, null, null, false);
+  };
+
   const verifyInput = (e) => {
     e.preventDefault();
     if (email && password) {
       details.forLogin
-        ? handlesignInOrSignUp(signInWithEmailAndPassword)
-        : handlesignInOrSignUp(createUserWithEmailAndPassword, false);
+        ? handlesignInOrSignUp(signInWithEmailAndPassword, email, password)
+        : handlesignInOrSignUp(
+            createUserWithEmailAndPassword,
+            email,
+            password,
+            false
+          );
     } else {
       Swal.fire({
         title: "Error",
@@ -210,8 +272,8 @@ export function LoginPage({ details, authStatus: { setIsAuthenticated } }) {
         icon: "error",
       });
     }
-    console.log("clicked");
   };
+
   return (
     <div className="login__container">
       <div className="display__page">
@@ -223,7 +285,12 @@ export function LoginPage({ details, authStatus: { setIsAuthenticated } }) {
         <LogoinForm
           formDetails={details}
           formValues={{ email, password }}
-          formFunctions={{ setEmail, setPassword, verifyInput }}
+          formFunctions={{
+            setEmail,
+            setPassword,
+            verifyInput,
+            signInWithGoogle,
+          }}
         />
         <LoginToSignUp text={details} />
       </div>

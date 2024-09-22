@@ -1,5 +1,4 @@
 import { useFetchUser } from "./useFetchUser";
-import loadingSvg from "../img/circleLoading.svg";
 import { updateDoc, doc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 import Swal from "sweetalert2";
@@ -9,7 +8,7 @@ import {
 } from "./HandleLoadingModal";
 
 export function MembersTable({ section, req: { setModalOpen, setUserID } }) {
-  const { allMembers, loading } = useFetchUser();
+  const { allMembers } = useFetchUser();
 
   const filteredData = allMembers.filter(
     (member) => member.isVerified === true
@@ -52,21 +51,6 @@ export function MembersTable({ section, req: { setModalOpen, setUserID } }) {
         handleVerifyUser(id);
       }
     });
-  }
-
-  if (loading) {
-    return (
-      <img
-        src={loadingSvg}
-        alt="loading"
-        style={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%,-50%)",
-        }}
-      />
-    );
   }
 
   return (

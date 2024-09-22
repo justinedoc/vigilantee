@@ -1,28 +1,7 @@
 import circleLoading from "../img/circleLoading.svg";
 import { useNavigate } from "react-router-dom";
-import { IDCard } from "./IDCard";
-import { pdf } from "@react-pdf/renderer";
-import {
-  handlecloseLoadingModal,
-  handleshowLoadingModal,
-} from "./HandleLoadingModal";
 
 export function ProfileForm({ dependencies: { loading, currentUser } }) {
-  const handleDownloadPdf = async () => {
-    handleshowLoadingModal("Generating ID...");
-    try {
-      const blob = await pdf(<IDCard />).toBlob();
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = "ID-card.pdf";
-      link.click();
-
-      handlecloseLoadingModal();
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   const navigate = useNavigate();
   return loading ? (
     <img
@@ -76,7 +55,18 @@ export function ProfileForm({ dependencies: { loading, currentUser } }) {
         />
       </form>
       <div className="btn-container">
-        <button onClick={handleDownloadPdf}>Print ID</button>
+        <button
+          onClick={() =>
+            navigate("/dashboard/id-card", {
+              state: {
+                url: `https://umuome-vigilantee.vercel.app/view/${currentUser?.id}`,
+                currentUser,
+              },
+            })
+          }
+        >
+          Print ID
+        </button>
         <button onClick={() => navigate("/dashboard/edit")}>
           Update Profile
         </button>
